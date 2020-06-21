@@ -20,13 +20,23 @@ class Company {
     /** For each possible search term, add to whereExpressions and queryValues so we can generate the right SQL*/
 
     if (data.min_employees) {
-      queryValues.push(+data.min_employees);
-      whereExpressions.push(`num_employees >= $${queryValues.length}`);
+      const minVal = +data.min_employees;
+      if (!minVal && minVal !== 0) {
+        throw { message: 'min must be a number', status: 400 };
+      } else {
+        queryValues.push(minVal);
+        whereExpressions.push(`num_employees >= $${queryValues.length}`);
+      }
     }
 
     if (data.max_employees) {
-      queryValues.push(+data.max_employees);
-      whereExpressions.push(`num_employees <= $${queryValues.length}`);
+      const maxVal = +data.max_employees;
+      if (!maxVal && maxVal !== 0) {
+        throw { message: 'max must be a number', status: 400 };
+      } else {
+        queryValues.push(maxVal);
+        whereExpressions.push(`num_employees <= $${queryValues.length}`);
+      }
     }
 
     if (data.search) {

@@ -14,7 +14,7 @@
       "logo_url": "bks"
     }
   ],
-  "required": ["handle", "name", "num_employees", "description" ],
+  "required": ["handle", "name"  ],
   "additionalProperties": true,
   "properties": {
     "handle": {

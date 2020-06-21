@@ -31,3 +31,5 @@ CREATE TABLE applications(
     created_at TIMESTAMP DEFAULT current_timestamp,
     PRIMARY KEY(username, job_id)
 );
+
+
