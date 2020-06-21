@@ -18,5 +18,16 @@ router.get('/', async function(req, res, next) {
   
 })
 
+/** GET /[handle]  =>  {company: company} */
+
+router.get('/:handle', async function(req, res, next) {
+  try {
+    const company = await Company.findOne(req.params.handle);
+    return res.json({company});
+  }catch(err){
+    return next(err)
+  }
+  
+})
 
 module.exports = router;
