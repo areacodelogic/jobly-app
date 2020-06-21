@@ -37,21 +37,29 @@ router.post('/', async function (req, res, next) {
   }
 });
 
-
 /** PATCH /[handle] {companyData} => {company: updatedCompany}  */
 
 router.patch('/:handle', async function (req, res, next) {
   try {
-    if('handle' in req.body){
-      throw new ExpressError("You are not allowed to change the handle", 400);
+    if ('handle' in req.body) {
+      throw new ExpressError('You are not allowed to change the handle', 400);
     }
 
     const company = await Company.update(req.params.handle, req.body);
-    return res.json({company})
+    return res.json({ company });
   } catch (err) {
-    throw next(err)
+    throw next(err);
   }
-})
+});
 
+/** DELETE /[handle]  =>  {message: "Company deleted"}  */
+router.delete(`/:handle`, async function (req, res, next) {
+  try {
+    await Company.remove(req.params.handle);
+    return res.json({ message: `Company Deleted` });
+  } catch (err) {
+    return next(err);
+  }
+});
 
 module.exports = router;

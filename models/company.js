@@ -124,6 +124,20 @@ class Company {
 
     return company;
   }
+
+  /** Delete given company from database; returns undefined. */
+
+  static async remove(handle) {
+    const result = await db.query(
+      `DELETE FROM companies
+        WHERE handle = $1
+        RETURNING handle`,
+      [handle]
+    );
+
+    if (result.rows.length === 0)
+      throw new ExpressError(`There exists no company ${handle}`);
+  }
 }
 
 module.exports = Company;
