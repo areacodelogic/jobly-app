@@ -2,6 +2,9 @@ const express = require('express');
 const ExpressError = require('../helpers/ExpressError');
 const Company = require('../models/company');
 
+const { validate } = require('jsonschema');
+const { companyNewSchema, companyUpdateSchema } = require('../schemas');
+
 const router = new express.Router();
 
 /** GET /  =>  {companies: [company, company]}  */
@@ -30,6 +33,14 @@ router.get('/:handle', async function (req, res, next) {
 
 router.post('/', async function (req, res, next) {
   try {
+    const validation = validate(req.body, companyNewSchema);
+
+    if (!validation.valid) {
+      let listOfErrors = validation.errors.map((err) => err.stack);
+      let error = new ExpressError(listOfErrors, 400);
+      return next(error);
+    }
+
     const company = await Company.create(req.body);
     return res.status(201).json({ company });
   } catch (err) {
@@ -44,6 +55,15 @@ router.patch('/:handle', async function (req, res, next) {
     if ('handle' in req.body) {
       throw new ExpressError('You are not allowed to change the handle', 400);
     }
+
+     const validation = validate(req.body, companyUpdateSchema);
+
+     if (!validation.valid) {
+       let listOfErrors = validation.errors.map((err) => err.stack);
+       let error = new ExpressError(listOfErrors, 400);
+       return next(error);
+     }
+
 
     const company = await Company.update(req.params.handle, req.body);
     return res.json({ company });
