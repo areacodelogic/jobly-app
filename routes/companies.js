@@ -37,4 +37,21 @@ router.post('/', async function (req, res, next) {
   }
 });
 
+
+/** PATCH /[handle] {companyData} => {company: updatedCompany}  */
+
+router.patch('/:handle', async function (req, res, next) {
+  try {
+    if('handle' in req.body){
+      throw new ExpressError("You are not allowed to change the handle", 400);
+    }
+
+    const company = await Company.update(req.params.handle, req.body);
+    return res.json({company})
+  } catch (err) {
+    throw next(err)
+  }
+})
+
+
 module.exports = router;
