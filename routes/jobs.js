@@ -2,7 +2,8 @@ const express = require('express');
 const ExpressError = require('../helpers/expressError');
 
 const Job = require('../models/job');
-
+const { validate } = require('jsonschema');
+const { jobNewSchema, jobUpdateSchema } = require('../schemas');
 const router = express.Router({ mergeParams: true });
 
 /** GET / => {jobs: [job, ...]} */
@@ -31,6 +32,13 @@ router.get('/:id', async function (req, res, next) {
 
 router.post('/', async function (req, res, next) {
   try {
+    const validation = validate(req.body, jobNewSchema);
+
+    if (!validation.valid) {
+      let listOfErrors = validation.errors.map((err) => err.stack);
+      let error = new ExpressError(listOfErrors, 400);
+      return next(error);
+    }
     const job = await Job.create(req.body);
     return res.status(201).json({ job });
   } catch (err) {
@@ -44,6 +52,14 @@ router.patch('/:id', async function (req, res, next) {
   try {
     if ('id' in req.body) {
       throw new ExpressError('You are not allowed to change the ID', 400);
+    }
+
+    const validation = validate(req.body, jobUpdateSchema);
+
+    if (!validation.valid) {
+      let listOfErrors = validation.errors.map((err) => err.stack);
+      let error = new ExpressError(listOfErrors, 400);
+      return next(error);
     }
 
     const job = await Job.update(req.params.id, req.body);
