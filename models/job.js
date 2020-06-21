@@ -52,6 +52,30 @@ class Job {
 
     return job;
   }
+
+  static async create(data) {
+    const result = await db.query(
+      `INSERT INTO jobs (title, salary, equity, company_handle) 
+        VALUES ($1, $2, $3, $4) 
+        RETURNING id, title, salary, equity, company_handle`,
+      [data.title, data.salary, data.equity, data.company_handle]
+    );
+
+    return result.rows[0];
+  }
+
+  static async update(id, data){
+    let {query, values} = sqlForPartialUpdate("jobs", data, "id", id);
+
+    const result = await db.query(query, values);
+    const job = result.rows[0]
+
+    if(!job){
+      throw new ExpressError(`There exists no job ${job}`, 404)
+    }
+
+    return job 
+  }
 }
 
 module.exports = Job;
