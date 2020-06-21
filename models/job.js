@@ -10,7 +10,6 @@ class Job {
     let whereExpressions = [];
     let queryValues = [];
 
-
     if (data.min_salary) {
       queryValues.push(+data.min_salary);
       whereExpressions.push(`min_salary >= $${queryValues.length}`);
@@ -37,11 +36,22 @@ class Job {
     return jobsRes.rows;
   }
 
+  static async findOne(id) {
+    const jobRes = await db.query(
+      `SELECT id, title, salary, equity, company_handle
+        FROM JOBS
+        WHERE id = $1`,
+      [id]
+    );
 
-  
+    const job = jobRes.rows[0];
 
+    if (!job) {
+      throw new ExpressError(`There exists no job ${id}, 404`);
+    }
 
-
+    return job;
+  }
 }
 
 module.exports = Job;
