@@ -15,6 +15,18 @@ CREATE TABLE jobs (
 
 );
 
+
+CREATE TABLE users(
+    username TEXT PRIMARY KEY,
+    password TEXT NOT NULL,
+    first_name TEXT,
+    last_name TEXT,
+    email TEXT,
+    photo_url TEXT,
+    is_admin BOOLEAN NOT NULL default FALSE
+);
+
+
 -- INSERT INTO companies
 --   VALUES ('apple', 'Apple Computer', 200, null, null),
 --          ('pixar', 'Pixar Animation Studios', 3000, 'the best', null),

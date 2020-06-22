@@ -4,6 +4,7 @@ const ExpressError = require('./helpers/ExpressError')
 
 const companiesRoutes = require('./routes/companies')
 const jobsRoutes = require('./routes/jobs')
+const userRoutes = require('./routes/users')
 
 const morgan = require('morgan');
 
@@ -18,6 +19,7 @@ app.use(morgan('tiny'));
 
 app.use('/companies', companiesRoutes);
 app.use('/jobs', jobsRoutes)
+app.use('/users', userRoutes)
 
 
 
