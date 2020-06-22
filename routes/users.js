@@ -5,8 +5,19 @@ const User = require('../models/User');
 
 const router = express.Router();
 
-/** POST / {userdata}  => {user: user} */
 
+/** GET / => {users: [user, ...]} */
+
+router.get('/', async function(req, res, next) {
+  try {
+    const users = await User.findAll()
+    return res.json({users})
+  } catch (err) {
+    return next(err)
+  }
+})
+
+/** POST / {userdata}  => {user: user} */
 
 router.post('/', async function(req, res, next) {
   try {
