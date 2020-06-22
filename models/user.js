@@ -61,14 +61,36 @@ class User {
     );
 
     const user = result.rows[0];
-    
-    if(!user){
-      throw new ExpressError(`There exists no user ${username}`, 404)
+
+    if (!user) {
+      throw new ExpressError(`There exists no user ${username}`, 404);
     }
 
     return user;
-
   }
+
+  /** Update user data with `data`.
+   *
+   * This is a "partial update" --- it's fine if data doesn't contain
+   * all the fields; this only changes provided ones.
+   *
+   * Return data for changed user.
+   *
+   */
+
+   static async update(username, data){
+
+    let {query, values} = partialUpdate('users', data, 'username', username);
+
+    const result = await db.query(query, values);
+    const user = result.rows[0];
+
+    if(!user){
+      throw new ExpressError(`There exist no user ${username}`, 404)
+    };
+
+    return user;
+   }
 }
 
 module.exports = User;
