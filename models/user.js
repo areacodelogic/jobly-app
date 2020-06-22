@@ -91,6 +91,20 @@ class User {
 
     return user;
    }
+
+   static async remove(username){
+     let result = await db.query(
+       `DELETE FROM users
+          WHERE username = $1
+          RETURNING username`,
+        [username]
+     )
+
+     if(result.rows.length === 0){
+       throw new ExpressError(`There exists no user ${username}`, 404)
+     }
+
+   }
 }
 
 module.exports = User;
