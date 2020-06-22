@@ -4,7 +4,9 @@
   "description": "a job searching ",
   "main": "server.js",
   "scripts": {
-    "test": "jest -i"
+    "test": "jest -i",
+        "test-debug": "node --inspect-brk $(which jest) --runInBand NAME_OF_FILE"
+
   },
   "author": "Tim Egart",
   "license": "ISC",

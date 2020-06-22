@@ -50,15 +50,38 @@ class Job {
       throw new ExpressError(`There exists no job ${id}, 404`);
     }
 
+    const companiesRes = await db.query(
+      `SELECT name, num_employees, description, logo_url
+        FROM companies
+        WHERE handle = $1`,
+      [job.company_handle]
+    );
+
+
+    job.company = companiesRes.rows(0);
+
     return job;
   }
 
   static async create(data) {
+    const { title, salary, equity, company_handle } = data;
+
     const result = await db.query(
-      `INSERT INTO jobs (title, salary, equity, company_handle) 
-        VALUES ($1, $2, $3, $4) 
-        RETURNING title, salary, equity, company_handle`,
-      [data.title, data.salary, data.equity, data.company_handle]
+      `
+            INSERT INTO jobs (
+                title,
+                salary,
+                equity,
+                company_handle)
+            VALUES ($1, $2, $3, $4)
+            RETURNING
+                id,
+                title,
+                salary,
+                equity,
+                company_handle,
+                date_posted`,
+      [title, salary, equity, company_handle]
     );
 
     return result.rows[0];

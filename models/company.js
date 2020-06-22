@@ -146,7 +146,7 @@ class Company {
     );
 
     if (result.rows.length === 0)
-      throw new ExpressError(`There exists no company ${handle}`);
+      throw new ExpressError(`There exists no company ${handle}`, 404);
   }
 }
 
