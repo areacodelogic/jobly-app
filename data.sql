@@ -15,12 +15,12 @@ CREATE TABLE jobs (
 
 );
 
-INSERT INTO companies
-  VALUES ('apple', 'Apple Computer', 200, null, null),
-         ('pixar', 'Pixar Animation Studios', 3000, 'the best', null),
-         ('ibm', 'IBM', 10, 'not a lot of employees', 'ibm.com');
+-- INSERT INTO companies
+--   VALUES ('apple', 'Apple Computer', 200, null, null),
+--          ('pixar', 'Pixar Animation Studios', 3000, 'the best', null),
+--          ('ibm', 'IBM', 10, 'not a lot of employees', 'ibm.com');
 
-INSERT INTO jobs (title, salary, equity, company_handle)
-  VALUES ( 'developer', 200000, .1, 'pixar'),
-         ( 'animator', 100000, 0.05, 'pixar');
+-- INSERT INTO jobs (title, salary, equity, company_handle)
+--   VALUES ( 'developer', 200000, .1, 'pixar'),
+--          ( 'animator', 100000, 0.05, 'pixar');
 

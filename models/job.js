@@ -6,18 +6,34 @@ class Job {
   /** Find all jobs (can filter on terms in data). */
 
   static async findAll(data) {
-    let baseQuery = 'SELECT id, title, company_handle FROM jobs';
+    let baseQuery = 'SELECT title, salary, equity, company_handle FROM jobs';
     let whereExpressions = [];
     let queryValues = [];
 
     if (data.min_salary) {
-      queryValues.push(+data.min_salary);
-      whereExpressions.push(`min_salary >= $${queryValues.length}`);
+      const minSalary = +data.min_salary;
+      if (!minSalary && minSalary !== 0) {
+        throw {
+          message: 'min_salary must be a number',
+          status: 400,
+        };
+      } else {
+        queryValues.push(+data.min_salary);
+        whereExpressions.push(`salary >= $${queryValues.length}`);
+      }
     }
 
     if (data.min_equity) {
-      queryValues.push(+data.min_equity);
-      whereExpressions.push(`min_equity >= $${queryValues.length}`);
+      const minEquity = +data.min_equity;
+      if (!minEquity && minEquity !== 0) {
+        throw {
+          message: 'min_equity must be a number',
+          status: 400,
+        };
+      } else {
+        queryValues.push(+data.min_equity);
+        whereExpressions.push(`equity >= $${queryValues.length}`);
+      }
     }
 
     if (data.search) {
@@ -37,6 +53,9 @@ class Job {
   }
 
   static async findOne(id) {
+    if (!Number.isInteger(Number(id))) {
+      throw new ExpressError('Id must be an integer', 400);
+    }
     const jobRes = await db.query(
       `SELECT id, title, salary, equity, company_handle
         FROM JOBS
@@ -47,7 +66,7 @@ class Job {
     const job = jobRes.rows[0];
 
     if (!job) {
-      throw new ExpressError(`There exists no job ${id}, 404`);
+      throw new ExpressError(`There exists no job ${id}`, 404 );
     }
 
     const companiesRes = await db.query(
@@ -57,8 +76,7 @@ class Job {
       [job.company_handle]
     );
 
-
-    job.company = companiesRes.rows(0);
+    job.company = companiesRes.rows[0];
 
     return job;
   }
@@ -101,6 +119,11 @@ class Job {
   }
 
   static async remove(id, data) {
+
+      if (!Number.isInteger(Number(id))) {
+        throw  new ExpressError('Id must be an integer', 400 );
+      }
+
     const result = await db.query(
       `DELETE FROM jobs
       WHERE id = $1
