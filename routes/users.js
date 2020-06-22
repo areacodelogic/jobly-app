@@ -32,13 +32,15 @@ router.get('/:username', async function (req, res, next) {
 
 router.post('/', async function (req, res, next) {
   try {
-    const validation = validate(req.body, userNewSchema);
+   const validation = validate(req.body, userNewSchema);
 
-    if (!validation.valid) {
-      let listOfErrors = validation.errors.map((err) => err.stack);
-      let error = new ExpressError(listOfErrors, 400);
-      return next(error);
-    }
+   if (!validation.valid) {
+     throw new ExpressError(
+       validation.errors.map((e) => e.stack),
+       400
+     );
+   }
+
     const newUser = await User.register(req.body);
     return res.status(201).json({ newUser });
   } catch (err) {
@@ -69,7 +71,7 @@ module.exports = router;
 router.delete(`/:username`, async function (req, res, next) {
   try {
     await User.remove(req.params.username);
-    return res.json({ messag: 'User deleted' });
+    return res.json({ message: 'User deleted' });
   } catch (err) {
     return next(err);
   }

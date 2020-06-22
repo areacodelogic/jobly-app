@@ -78,33 +78,31 @@ class User {
    *
    */
 
-   static async update(username, data){
-
-    let {query, values} = partialUpdate('users', data, 'username', username);
+  static async update(username, data) {
+    let { query, values } = partialUpdate('users', data, 'username', username);
 
     const result = await db.query(query, values);
     const user = result.rows[0];
 
-    if(!user){
-      throw new ExpressError(`There exist no user ${username}`, 404)
-    };
+    if (!user) {
+      throw new ExpressError(`There exist no user ${username}`, 404);
+    }
 
     return user;
-   }
+  }
 
-   static async remove(username){
-     let result = await db.query(
-       `DELETE FROM users
+  static async remove(username) {
+    let result = await db.query(
+      `DELETE FROM users
           WHERE username = $1
           RETURNING username`,
-        [username]
-     )
+      [username]
+    );
 
-     if(result.rows.length === 0){
-       throw new ExpressError(`There exists no user ${username}`, 404)
-     }
-
-   }
+    if (result.rows.length === 0) {
+      throw new ExpressError(`There exists no user ${username}`, 404);
+    }
+  }
 }
 
 module.exports = User;

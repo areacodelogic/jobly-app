@@ -8,17 +8,14 @@ beforeEach(async function () {
   await db.query(`INSERT INTO companies (handle, name, num_employees, description, logo_url)
                     VALUES ('TEST1', 'TestCo1', 1000, 'test description1', 'test_url1'),
                            ('TEST2', 'TestCo2', 2000, 'test description2', 'test_url2')`);
-  console.log('beforeEach');
 });
 
 afterEach(async function () {
   await db.query(`DELETE FROM companies`);
-  console.log('afterEach');
 });
 
 afterAll(async function () {
   await db.end();
-  console.log('afterAll');
 });
 
 describe('GET /', function () {
