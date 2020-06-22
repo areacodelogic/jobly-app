@@ -1,6 +1,8 @@
 const express = require('express');
 const ExpressError = require('../helpers/ExpressError');
 const User = require('../models/User');
+const { validate } = require('jsonschema');
+const { userNewSchema, userUpdateSchema } = require('../schemas');
 
 const router = express.Router();
 
@@ -30,6 +32,13 @@ router.get('/:username', async function (req, res, next) {
 
 router.post('/', async function (req, res, next) {
   try {
+    const validation = validate(req.body, userNewSchema);
+
+    if (!validation.valid) {
+      let listOfErrors = validation.errors.map((err) => err.stack);
+      let error = new ExpressError(listOfErrors, 400);
+      return next(error);
+    }
     const newUser = await User.register(req.body);
     return res.status(201).json({ newUser });
   } catch (err) {
@@ -41,6 +50,13 @@ router.post('/', async function (req, res, next) {
 
 router.patch('/:username', async function (req, res, next) {
   try {
+    const validation = validate(req.body, userUpdateSchema);
+
+    if (!validation.valid) {
+      let listOfErrors = validation.errors.map((err) => err.stack);
+      let error = new ExpressError(listOfErrors, 400);
+      return next(error);
+    }
     const user = await User.update(req.params.username, req.body);
     return res.json({ user });
   } catch (err) {
