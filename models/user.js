@@ -40,14 +40,34 @@ class User {
 
   /** Find all users. */
 
-  static async findAll(){
+  static async findAll() {
     const result = await db.query(
       `SELECT username, first_name, last_name, email
         FROM users
         ORDER by username`
     );
 
-    return result.rows
+    return result.rows;
+  }
+
+  /** Given a username, return data about user. */
+
+  static async findOne(username) {
+    const result = await db.query(
+      `SELECT username, first_name, last_name, photo_url
+        FROM users
+        WHERE username = $1`,
+      [username]
+    );
+
+    const user = result.rows[0];
+    
+    if(!user){
+      throw new ExpressError(`There exists no user ${username}`, 404)
+    }
+
+    return user;
+
   }
 }
 

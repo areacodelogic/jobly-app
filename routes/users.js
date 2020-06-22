@@ -17,6 +17,18 @@ router.get('/', async function(req, res, next) {
   }
 })
 
+/** GET /[username] => {user: user} */
+
+router.get('/:username', async function(req, res, next) {
+  try {
+    const user = await User.findOne(req.params.username);
+    return res.json({user})
+  } catch (err) {
+    return next(err)
+  }
+})
+
+
 /** POST / {userdata}  => {user: user} */
 
 router.post('/', async function(req, res, next) {
