@@ -26,6 +26,14 @@ CREATE TABLE users(
     is_admin BOOLEAN NOT NULL default FALSE
 );
 
+CREATE TABLE applications(
+    username TEXT NOT NULL REFERENCES users ON DELETE CASCADE,
+    job_id INTEGER  REFERENCES jobs ON DELETE CASCADE,
+    state TEXT,
+    created_at TIMESTAMP DEFAULT current_timestamp,
+    PRIMARY KEY(username, job_id)
+);
+
 
 -- INSERT INTO companies
 --   VALUES ('apple', 'Apple Computer', 200, null, null),

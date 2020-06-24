@@ -66,9 +66,32 @@ function adminRequired(req, res, next) {
   }
 }
 
+/** Middleware to use when they must provide a valid token.
+ *
+ * Add username onto req as a convenience for view functions.
+ *
+ * If not, raises Unauthorized.
+ *
+ */
+
+function authRequired(req, res, next) {
+  try {
+    const tokenStr = req.body._token || req.query._token;
+
+    let payload = jwt.verify(tokenStr, SECRET_KEY);
+
+    req.username = payload.username;
+
+    return next();
+  } catch (err) {
+    return next(new ExpressError('You must authenticate first.', 401));
+  }
+}
+
 module.exports = {
   authenticateJWT,
   ensureCorrectUser,
   ensureLoggedIn,
   adminRequired,
+  authRequired,
 };

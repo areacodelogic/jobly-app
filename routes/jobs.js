@@ -2,7 +2,7 @@ const express = require('express');
 const ExpressError = require('../helpers/expressError');
 
 const Job = require('../models/job');
-const { ensureLoggedIn, adminRequired } = require('../middleware/auth');
+const { ensureLoggedIn, adminRequired, authRequired, ensureCorrectUser } = require('../middleware/auth');
 const { validate } = require('jsonschema');
 const { jobNewSchema, jobUpdateSchema } = require('../schemas');
 const router = express.Router({ mergeParams: true });
@@ -80,5 +80,18 @@ router.delete(`/:id`, adminRequired, async function (req, res, next) {
     return next(err);
   }
 });
+
+/** POST /[id]/apply  {state} => {message: state} */
+
+router.post("/:id/apply", authRequired, async function(req, res, next) {
+  try {
+    console.log(req.username)
+    const state = req.body.state || "applied";
+    await Job.apply(req.params.id, req.user.username, state)
+    return res.json({message: state})
+  } catch (err) {
+    return next(err)
+  }
+})
 
 module.exports = router;

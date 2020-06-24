@@ -26,7 +26,6 @@ class User {
           WHERE username = $1`,
     [data.username]
     )
-    console.log("DO I GET HERE")
 
     const user = result.rows[0];
     
@@ -37,6 +36,7 @@ class User {
       }
       
     }
+
 
     throw new ExpressError(`Invalid Password`, 401)
   }
@@ -102,6 +102,17 @@ class User {
     if (!user) {
       throw new ExpressError(`There exists no user ${username}`, 404);
     }
+
+   
+    const userJobsRes = await db.query(
+      `SELECT j.id, j.title, j.company_handle, a.state 
+           FROM applications AS a
+             JOIN jobs AS j ON j.id = a.job_id
+           WHERE a.username = $1`,
+      [username]
+    );
+
+    user.jobs = userJobsRes.rows;
 
     return user;
   }

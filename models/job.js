@@ -143,5 +143,29 @@ class Job {
       throw ExpressError(`THere exists no job ${id}`, 404);
     }
   }
+
+ 
+  /** Apply for job: update db, returns undefined. */
+
+  static async apply(id, username, state) {
+      const result = await db.query(
+          `SELECT id 
+            FROM jobs 
+            WHERE id = $1`,
+          [id]);
+
+      if (result.rows.length === 0) {
+        let notFound = new Error(`There exists no job '${id}`);
+        notFound.status = 404;
+        throw notFound;
+      }
+
+      await db.query(
+          `INSERT INTO applications (job_id, username, state) 
+            VALUES ($1, $2, $3)`,
+          [id, username, state]);
+  }
+
 }
+
 module.exports = Job;
