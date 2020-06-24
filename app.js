@@ -1,25 +1,28 @@
 const express = require('express');
 
 const ExpressError = require('./helpers/ExpressError')
-
-const companiesRoutes = require('./routes/companies')
-const jobsRoutes = require('./routes/jobs')
-const userRoutes = require('./routes/users')
+const app = express();
+const { authenticateJWT } = require('./middleware/auth');
 
 const morgan = require('morgan');
 
-const app = express();
 
 app.use(express.json());
+// app.use(authenticateJWT);
 
 
 // add logging system
 app.use(morgan('tiny'));
 
 
+const companiesRoutes = require('./routes/companies');
+const jobsRoutes = require('./routes/jobs');
+const userRoutes = require('./routes/users');
+const authRoutes = require('./routes/auth');
 app.use('/companies', companiesRoutes);
 app.use('/jobs', jobsRoutes)
 app.use('/users', userRoutes)
+app.use('/auth', authRoutes)
 
 
 

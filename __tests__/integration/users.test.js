@@ -79,7 +79,6 @@ describe('POST /users', function () {
       email: 'new@email.com',
     });
 
-    console.log(response.body);
     expect(response.statusCode).toBe(201);
     expect(response.body).toEqual({
       newUser: {

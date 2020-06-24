@@ -1,8 +1,11 @@
 const express = require('express');
 const ExpressError = require('../helpers/ExpressError');
+const { ensureCorrectUser } = require('../middleware/auth');
 const User = require('../models/User');
 const { validate } = require('jsonschema');
 const { userNewSchema, userUpdateSchema } = require('../schemas');
+const createToken = require('../helpers/createToken');
+
 
 const router = express.Router();
 
@@ -32,6 +35,7 @@ router.get('/:username', async function (req, res, next) {
 
 router.post('/', async function (req, res, next) {
   try {
+    console.log("req body", req.body)
    const validation = validate(req.body, userNewSchema);
 
    if (!validation.valid) {
@@ -42,7 +46,8 @@ router.post('/', async function (req, res, next) {
    }
 
     const newUser = await User.register(req.body);
-    return res.status(201).json({ newUser });
+    const token = createToken(newUser);
+    return res.status(201).json({ token });
   } catch (err) {
     return next(err);
   }
@@ -50,7 +55,7 @@ router.post('/', async function (req, res, next) {
 
 /** PATCH /[handle] {userData} => {user: updatedUser} */
 
-router.patch('/:username', async function (req, res, next) {
+router.patch('/:username', ensureCorrectUser, async function (req, res, next) {
   try {
     const validation = validate(req.body, userUpdateSchema);
 
@@ -68,7 +73,7 @@ router.patch('/:username', async function (req, res, next) {
 
 module.exports = router;
 
-router.delete(`/:username`, async function (req, res, next) {
+router.delete(`/:username`, ensureCorrectUser, async function (req, res, next) {
   try {
     await User.remove(req.params.username);
     return res.json({ message: 'User deleted' });
@@ -76,3 +81,5 @@ router.delete(`/:username`, async function (req, res, next) {
     return next(err);
   }
 });
+
+module.exports = router;

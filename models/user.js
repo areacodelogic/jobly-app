@@ -1,9 +1,44 @@
 const db = require('../db');
 const partialUpdate = require('../helpers/partialUpdate');
 const ExpressError = require('../helpers/ExpressError');
+const bcrypt = require('bcrypt');
+
+const BCRYPT_WORK_FACTOR = 10;
+
 
 class User {
+
+  /**authenticate user with username, password. Return user or throws error */
   /** Register user with data. Returns new user data. */
+
+
+  static async authenticate(data){
+
+    const result = await db.query(
+      `SELECT username,
+              password,
+              first_name,
+              last_name,
+              email,
+              photo_url,
+              is_admin
+          FROM users
+          WHERE username = $1`,
+    [data.username]
+    )
+
+    const user = result.rows[0];
+    
+    if(user){
+      const isValid = await bcrypt.compare(data.password, user.password);
+      if(isValid){
+        return user
+      }
+      
+    }
+
+    throw ExpressError(`Invalid Password`, 401)
+  }
 
   static async register(data) {
     const duplicateCheck = await db.query(
@@ -19,6 +54,8 @@ class User {
         400
       );
     }
+    console.log("this is the data", data)
+    const hashedPassword = await bcrypt.hash(data.password, BCRYPT_WORK_FACTOR)
 
     const result = await db.query(
       `INSERT into users
@@ -27,7 +64,7 @@ class User {
           RETURNING username, password, first_name, last_name, email, photo_url`,
       [
         data.username,
-        data.password,
+        hashedPassword,
         data.first_name,
         data.last_name,
         data.email,

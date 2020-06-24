@@ -2,13 +2,14 @@ const express = require('express');
 const ExpressError = require('../helpers/expressError');
 
 const Job = require('../models/job');
+const { ensureLoggedIn, ensureAdminUser } = require('../middleware/auth');
 const { validate } = require('jsonschema');
 const { jobNewSchema, jobUpdateSchema } = require('../schemas');
 const router = express.Router({ mergeParams: true });
 
 /** GET / => {jobs: [job, ...]} */
 
-router.get('/', async function (req, res, next) {
+router.get('/', ensureLoggedIn, async function (req, res, next) {
   try {
     const jobs = await Job.findAll(req.query);
     return res.json({ jobs });
@@ -19,7 +20,7 @@ router.get('/', async function (req, res, next) {
 
 /** GET /[jobid] => {job: job} */
 
-router.get('/:id', async function (req, res, next) {
+router.get('/:id', ensureLoggedIn, async function (req, res, next) {
   try {
     const job = await Job.findOne(req.params.id);
     return res.json({ job });
@@ -30,7 +31,7 @@ router.get('/:id', async function (req, res, next) {
 
 /** POST / {jobData} => {job: job} */
 
-router.post('/', async function (req, res, next) {
+router.post('/', ensureAdminUser, async function (req, res, next) {
   try {
     const validation = validate(req.body, jobNewSchema);
 
@@ -48,7 +49,7 @@ router.post('/', async function (req, res, next) {
 
 /** PATCH /[jobid]  {jobData} => {job: updatedJob} */
 
-router.patch('/:id', async function (req, res, next) {
+router.patch('/:id', ensureAdminUser, async function (req, res, next) {
   try {
     if ('id' in req.body) {
       throw new ExpressError('You are not allowed to change the ID', 400);
@@ -71,7 +72,7 @@ router.patch('/:id', async function (req, res, next) {
 
 /** DELETE /[handle]  =>  {message: "User deleted"}  */
 
-router.delete(`/:id`, async function (req, res, next) {
+router.delete(`/:id`, ensureAdminUser, async function (req, res, next) {
   try {
     await Job.remove(req.params.id);
     return res.json({ message: 'Job deleted' });
