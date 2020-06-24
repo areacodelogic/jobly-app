@@ -2,7 +2,7 @@ const express = require('express');
 const ExpressError = require('../helpers/expressError');
 
 const Job = require('../models/job');
-const { ensureLoggedIn, ensureAdminUser } = require('../middleware/auth');
+const { ensureLoggedIn, adminRequired } = require('../middleware/auth');
 const { validate } = require('jsonschema');
 const { jobNewSchema, jobUpdateSchema } = require('../schemas');
 const router = express.Router({ mergeParams: true });
@@ -31,7 +31,7 @@ router.get('/:id', ensureLoggedIn, async function (req, res, next) {
 
 /** POST / {jobData} => {job: job} */
 
-router.post('/', ensureAdminUser, async function (req, res, next) {
+router.post('/', adminRequired, async function (req, res, next) {
   try {
     const validation = validate(req.body, jobNewSchema);
 
@@ -49,7 +49,7 @@ router.post('/', ensureAdminUser, async function (req, res, next) {
 
 /** PATCH /[jobid]  {jobData} => {job: updatedJob} */
 
-router.patch('/:id', ensureAdminUser, async function (req, res, next) {
+router.patch('/:id', adminRequired, async function (req, res, next) {
   try {
     if ('id' in req.body) {
       throw new ExpressError('You are not allowed to change the ID', 400);
@@ -72,7 +72,7 @@ router.patch('/:id', ensureAdminUser, async function (req, res, next) {
 
 /** DELETE /[handle]  =>  {message: "User deleted"}  */
 
-router.delete(`/:id`, ensureAdminUser, async function (req, res, next) {
+router.delete(`/:id`, adminRequired, async function (req, res, next) {
   try {
     await Job.remove(req.params.id);
     return res.json({ message: 'Job deleted' });

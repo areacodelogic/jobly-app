@@ -1,7 +1,7 @@
 const express = require('express');
 const ExpressError = require('../helpers/ExpressError');
 const Company = require('../models/company');
-const { ensureAdminUser, ensureLoggedIn } = require('../middleware/auth');
+const {  ensureLoggedIn, adminRequired } = require('../middleware/auth');
 
 const { validate } = require('jsonschema');
 const { companyNewSchema, companyUpdateSchema } = require('../schemas');
@@ -32,7 +32,7 @@ router.get('/:handle', ensureLoggedIn, async function (req, res, next) {
 
 /** POST / {companyData} =>  {company: newCompany} */
 
-router.post('/',ensureAdminUser, async function (req, res, next) {
+router.post('/',adminRequired, async function (req, res, next) {
   try {
     const validation = validate(req.body, companyNewSchema);
 
@@ -51,7 +51,7 @@ router.post('/',ensureAdminUser, async function (req, res, next) {
 
 /** PATCH /[handle] {companyData} => {company: updatedCompany}  */
 
-router.patch('/:handle', ensureAdminUser, async function (req, res, next) {
+router.patch('/:handle', adminRequired, async function (req, res, next) {
   try {
     if ('handle' in req.body) {
       throw new ExpressError('You are not allowed to change the handle', 400);
@@ -74,7 +74,7 @@ router.patch('/:handle', ensureAdminUser, async function (req, res, next) {
 });
 
 /** DELETE /[handle]  =>  {message: "Company deleted"}  */
-router.delete(`/:handle`, ensureAdminUser, async function (req, res, next) {
+router.delete(`/:handle`, adminRequired, async function (req, res, next) {
   try {
     await Company.remove(req.params.handle);
     return res.json({ message: `Company Deleted` });

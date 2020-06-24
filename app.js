@@ -2,17 +2,17 @@ const express = require('express');
 
 const ExpressError = require('./helpers/ExpressError')
 const app = express();
-const { authenticateJWT } = require('./middleware/auth');
 
 const morgan = require('morgan');
 
 
 app.use(express.json());
-// app.use(authenticateJWT);
+// const { authenticateJWT } = require('./middleware/auth');
 
 
 // add logging system
 app.use(morgan('tiny'));
+// app.use(authenticateJWT);
 
 
 const companiesRoutes = require('./routes/companies');

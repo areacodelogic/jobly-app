@@ -66,7 +66,7 @@ class Job {
     const job = jobRes.rows[0];
 
     if (!job) {
-      throw new ExpressError(`There exists no job ${id}`, 404 );
+      throw new ExpressError(`There exists no job ${id}`, 404);
     }
 
     const companiesRes = await db.query(
@@ -105,6 +105,14 @@ class Job {
     return result.rows[0];
   }
 
+  /** Update job data with `data`.
+   *
+   * This is a "partial update" --- it's fine if data doesn't contain
+   * all the fields; this only changes provided ones.
+   *
+   * Return data for changed job.
+   *
+   */
   static async update(id, data) {
     let { query, values } = sqlForPartialUpdate('jobs', data, 'id', id);
 
@@ -119,10 +127,9 @@ class Job {
   }
 
   static async remove(id, data) {
-
-      if (!Number.isInteger(Number(id))) {
-        throw  new ExpressError('Id must be an integer', 400 );
-      }
+    if (!Number.isInteger(Number(id))) {
+      throw new ExpressError('Id must be an integer', 400);
+    }
 
     const result = await db.query(
       `DELETE FROM jobs

@@ -16,7 +16,7 @@
     }
   ],
   "required": ["username" ],
-  "additionalProperties": false,
+  "additionalProperties": true,
   "properties": {
     "username": {
       "$id": "#/properties/username",

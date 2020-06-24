@@ -1,10 +1,11 @@
 const express = require('express');
 const ExpressError = require('../helpers/ExpressError');
-const { ensureCorrectUser } = require('../middleware/auth');
+const { ensureCorrectUser, authRequired } = require('../middleware/auth');
 const User = require('../models/User');
 const { validate } = require('jsonschema');
 const { userNewSchema, userUpdateSchema } = require('../schemas');
 const createToken = require('../helpers/createToken');
+const { SECRET_KEY } = require('../config');
 
 
 const router = express.Router();
@@ -22,7 +23,7 @@ router.get('/', async function (req, res, next) {
 
 /** GET /[username] => {user: user} */
 
-router.get('/:username', async function (req, res, next) {
+router.get('/:username', ensureCorrectUser, async function (req, res, next) {
   try {
     const user = await User.findOne(req.params.username);
     return res.json({ user });
@@ -45,9 +46,9 @@ router.post('/', async function (req, res, next) {
      );
    }
 
-    const newUser = await User.register(req.body);
-    const token = createToken(newUser);
-    return res.status(201).json({ token });
+    const user = await User.register(req.body);
+     const token = createToken(user);
+     return res.status(201).json({ token });
   } catch (err) {
     return next(err);
   }
@@ -57,6 +58,13 @@ router.post('/', async function (req, res, next) {
 
 router.patch('/:username', ensureCorrectUser, async function (req, res, next) {
   try {
+
+     if ('username' in req.body || 'is_admin' in req.body) {
+       throw new ExpressError(
+         'You are not allowed to change username or is_admin properties.',
+         400
+       );
+     }
     const validation = validate(req.body, userUpdateSchema);
 
     if (!validation.valid) {

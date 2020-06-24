@@ -11,7 +11,7 @@ const db = require('../db');
  *
  */
 
-function authenticateJWT(req, res, next) {
+function authRequired(req, res, next) {
   try {
     const tokenStr = req.body._token;
     let payload = jwt.verify(tokenStr, SECRET_KEY);
@@ -41,7 +41,7 @@ function ensureCorrectUser(req, res, next) {
     const tokenStr = req.body._token;
 
     let payload = jwt.verify(tokenStr, SECRET_KEY);
-    req.user = payload;
+    req.user = payload
 
     if (req.user.username === req.params.username) {
       return next();
@@ -56,29 +56,29 @@ function ensureCorrectUser(req, res, next) {
 /** Middleware: Check if user is admin. */
 
 
-async function ensureAdminUser(req, res, next) {
-  try {
-    let user = await db.query(
-      `SELECT is_admin
-      FROM users
-      WHERE username = $1`,
-      [req.user.username]
-    );
 
-    if (user.rows[0].is_admin === true) {
+function adminRequired(req, res, next) {
+  try {
+    const tokenStr = req.body._token;
+
+    let token = jwt.verify(tokenStr, SECRET_KEY);
+    res.locals.username = token.username;
+
+    if (token.is_admin) {
       return next();
-    } else {
-    return next(new ExpressError('Unauthorized', 401));
     }
+
+    // throw an error, so we catch it in our catch, below
+    throw new Error();
   } catch (err) {
-    // errors would happen here if we made a request and req.user is undefined
-    return next(new ExpressError('Unauthorized', 401));
+    return next(new ExpressError('You must be an admin to access', 401));
   }
 }
 
+
 module.exports = {
-  authenticateJWT,
+  authRequired,
   ensureCorrectUser,
   ensureLoggedIn,
-  ensureAdminUser,
+  adminRequired,
 };

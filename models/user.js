@@ -13,7 +13,7 @@ class User {
 
 
   static async authenticate(data){
-
+  
     const result = await db.query(
       `SELECT username,
               password,
@@ -28,16 +28,18 @@ class User {
     )
 
     const user = result.rows[0];
+    console.log('where is the user', user)
     
     if(user){
       const isValid = await bcrypt.compare(data.password, user.password);
       if(isValid){
+        console.log('this is the user', user)
         return user
       }
       
     }
 
-    throw ExpressError(`Invalid Password`, 401)
+    throw new ExpressError(`Invalid Password`, 401)
   }
 
   static async register(data) {
@@ -54,7 +56,6 @@ class User {
         400
       );
     }
-    console.log("this is the data", data)
     const hashedPassword = await bcrypt.hash(data.password, BCRYPT_WORK_FACTOR)
 
     const result = await db.query(
@@ -116,30 +117,41 @@ class User {
    */
 
   static async update(username, data) {
-    let { query, values } = partialUpdate('users', data, 'username', username);
+    if (data.password) {
+      data.password = await bcrypt.hash(data.password, BCRYPT_WORK_FACTOR);
+    }
+
+    let { query, values } = partialUpdate("users", data, "username", username);
 
     const result = await db.query(query, values);
     const user = result.rows[0];
 
     if (!user) {
-      throw new ExpressError(`There exist no user ${username}`, 404);
+      throw new ExpressError(`There exists no user '${username}'`, 404);
     }
 
-    return user;
+    delete user.password;
+    delete user.is_admin;
+
+    return result.rows[0];
   }
+
+  /** Delete given user from database; returns undefined. */
 
   static async remove(username) {
     let result = await db.query(
-      `DELETE FROM users
-          WHERE username = $1
-          RETURNING username`,
+      `DELETE FROM users 
+        WHERE username = $1
+        RETURNING username`,
       [username]
     );
 
     if (result.rows.length === 0) {
-      throw new ExpressError(`There exists no user ${username}`, 404);
+      throw new ExpressError(`There exists no user '${username}'`, 404);
     }
   }
 }
+
+
 
 module.exports = User;
