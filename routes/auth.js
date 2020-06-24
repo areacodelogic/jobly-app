@@ -2,8 +2,13 @@
 
 const User = require('../models/User');
 const express = require('express');
+const jwt = require('jsonwebtoken');
 const router = new express.Router();
-const createToken = require('../helpers/createToken');
+const createToken = require('../helpers/createToken')
+
+
+const { SECRET_KEY } = require('../config');
+
 
 router.post('/login', async function (req, res, next) {
   try {
@@ -16,3 +21,5 @@ router.post('/login', async function (req, res, next) {
 });
 
 module.exports = router;
+
+

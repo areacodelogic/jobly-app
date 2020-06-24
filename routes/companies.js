@@ -32,7 +32,7 @@ router.get('/:handle', ensureLoggedIn, async function (req, res, next) {
 
 /** POST / {companyData} =>  {company: newCompany} */
 
-router.post('/',adminRequired, async function (req, res, next) {
+router.post('/', adminRequired, async function (req, res, next) {
   try {
     const validation = validate(req.body, companyNewSchema);
 

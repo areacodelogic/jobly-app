@@ -1,18 +1,19 @@
 const express = require('express');
 const ExpressError = require('../helpers/ExpressError');
-const { ensureCorrectUser, authRequired } = require('../middleware/auth');
+const { ensureCorrectUser, ensureLoggedIn } = require('../middleware/auth');
 const User = require('../models/User');
 const { validate } = require('jsonschema');
 const { userNewSchema, userUpdateSchema } = require('../schemas');
 const createToken = require('../helpers/createToken');
-const { SECRET_KEY } = require('../config');
+
+
 
 
 const router = express.Router();
 
 /** GET / => {users: [user, ...]} */
 
-router.get('/', async function (req, res, next) {
+router.get('/', ensureLoggedIn, async function (req, res, next) {
   try {
     const users = await User.findAll();
     return res.json({ users });
@@ -23,7 +24,7 @@ router.get('/', async function (req, res, next) {
 
 /** GET /[username] => {user: user} */
 
-router.get('/:username', ensureCorrectUser, async function (req, res, next) {
+router.get('/:username', ensureLoggedIn, async function (req, res, next) {
   try {
     const user = await User.findOne(req.params.username);
     return res.json({ user });
@@ -36,7 +37,6 @@ router.get('/:username', ensureCorrectUser, async function (req, res, next) {
 
 router.post('/', async function (req, res, next) {
   try {
-    console.log("req body", req.body)
    const validation = validate(req.body, userNewSchema);
 
    if (!validation.valid) {
@@ -47,7 +47,8 @@ router.post('/', async function (req, res, next) {
    }
 
     const user = await User.register(req.body);
-     const token = createToken(user);
+    const token = createToken(user);
+
      return res.status(201).json({ token });
   } catch (err) {
     return next(err);
