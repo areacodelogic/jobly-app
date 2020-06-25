@@ -10,8 +10,10 @@ const userRoutes = require('./routes/users');
 const morgan = require('morgan');
 
 const app = express();
+const cors = require('cors');
 
 app.use(express.json());
+app.use(cors());
 
 const { authenticateJWT } = require('./middleware/auth');
 

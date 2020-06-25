@@ -13,7 +13,7 @@ const router = express.Router({ mergeParams: true });
 
 /** GET / => {jobs: [job, ...]} */
 
-router.get('/', ensureLoggedIn, async function (req, res, next) {
+router.get('/', authRequired, async function (req, res, next) {
   try {
     const jobs = await Job.findAll(req.query);
     return res.json({ jobs });
@@ -24,7 +24,7 @@ router.get('/', ensureLoggedIn, async function (req, res, next) {
 
 /** GET /[jobid] => {job: job} */
 
-router.get('/:id', ensureLoggedIn, async function (req, res, next) {
+router.get('/:id', authRequired, async function (req, res, next) {
   try {
     const job = await Job.findOne(req.params.id);
     return res.json({ job });

@@ -1,7 +1,7 @@
 const express = require('express');
 const ExpressError = require('../helpers/ExpressError');
 const Company = require('../models/company');
-const {  ensureLoggedIn, adminRequired } = require('../middleware/auth');
+const {  ensureLoggedIn, adminRequired, authRequired } = require('../middleware/auth');
 
 const { validate } = require('jsonschema');
 const { companyNewSchema, companyUpdateSchema } = require('../schemas');
@@ -10,7 +10,7 @@ const router = new express.Router();
 
 /** GET /  =>  {companies: [company, company]}  */
 
-router.get('/', ensureLoggedIn, async function (req, res, next) {
+router.get('/', authRequired, async function (req, res, next) {
   try {
     const companies = await Company.findAll(req.query);
     return res.json({ companies });
@@ -21,7 +21,7 @@ router.get('/', ensureLoggedIn, async function (req, res, next) {
 
 /** GET /[handle]  =>  {company: company} */
 
-router.get('/:handle', ensureLoggedIn, async function (req, res, next) {
+router.get('/:handle', authRequired, async function (req, res, next) {
   try {
     const company = await Company.findOne(req.params.handle);
     return res.json({ company });
