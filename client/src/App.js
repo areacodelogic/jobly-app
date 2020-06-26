@@ -1,36 +1,23 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import JoblyApi from './JoblyApi';
-
+import Routes from '../src/components/routing/Routes';
+import Navbar from '../src/components/layout/Navbar';
 
 import './App.css';
 
 class App extends Component {
-
-  constructor(props){
+  constructor(props) {
     super(props);
-    this.state = {
-      companies: []
-    }
   }
 
-  async componentDidMount(){
-
-    let companies = await JoblyApi.getJob(3);
-    console.log(companies)
-    this.setState({companies})
-
+  render() {
+    return (
+      <div>
+        <Navbar />
+        <Routes />
+      </div>
+    );
   }
-
-
-
-  render(){
-    return(
-      <div>App</div>
-    )
-  }
-
 }
-  
-
 
 export default App;
