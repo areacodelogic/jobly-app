@@ -5,8 +5,8 @@ class Navigation extends Component {
   render() {
     return (
       <div>
-        <nav className='navbar navbar-expand-lg navbar-light bg-light'>
-          <NavLink className='navbar-brand' to='#'>
+        <nav className='navbar fixed-top navbar-expand-lg navbar-light bg-light'>
+          <NavLink className='navbar-brand' to='/'>
             Jobly
           </NavLink>
           <button

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import JoblyApi from './JoblyApi';
+import JoblyApi from './search/JoblyApi';
 import Routes from '../src/components/routing/Routes';
 import Navbar from '../src/components/layout/Navbar';
 
