@@ -6,7 +6,7 @@ class Company {
   /** Find all companies **/
 
   static async findAll(data) {
-    let baseQuery = `SELECT handle, name FROM companies`;
+    let baseQuery = `SELECT handle, name, description, logo_url FROM companies`;
     let whereExpressions = [];
     let queryValues = [];
 

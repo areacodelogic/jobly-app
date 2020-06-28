@@ -19,7 +19,7 @@ class Routes extends Component {
           <Route exact path='/companies' render={() => <Companies />} />
           <Route
             exact
-            path='/companies:handle'
+            path='/companies/:handle'
             render={(props) => <Company {...props} />}
           />
           <Route exact path='/jobs' render={() => <Jobs />} />
