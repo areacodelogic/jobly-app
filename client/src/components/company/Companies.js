@@ -13,21 +13,21 @@ class Companies extends Component {
     this.handleSearch = this.handleSearch.bind(this);
   }
 
-  async handleSearch(search) {
-    let companies = await JoblyApi.getCompanies(search);
-    this.setState({ companies });
-  }
-
+  
   async componentDidMount() {
     let companies = await JoblyApi.getCompanies();
     this.setState({ companies });
   }
-
+  
+  async handleSearch(search) {
+    let companies = await JoblyApi.getCompanies(search);
+    this.setState({ companies });
+  }
   render() {
     return (
       <div className='Companies col-md-8 offset-md-2'>
         <Search
-          className='mt-2'
+          className='Search'
           handleSearch={this.handleSearch}
         />
         <CompanyList companies={this.state.companies} />

@@ -8,7 +8,7 @@ class CompanyCard extends Component {
     const { name, description, logo_url, handle } = this.props.company;
 
     return (
-      <Link className='Card card' to={`/companies/${handle}`}>
+      <Link className='Company-Card card' to={`/companies/${handle}`}>
         <div className='card-body'>
           <h6 className='card-title d-flex justify-content-between'>
             <span >{name}</span>

@@ -5,9 +5,9 @@ import "./Navbar.css"
 class Navigation extends Component {
   render() {
     return (
-      <div className="Navbar">
-        <nav className='navbar navbar-expand-lg'>
-          <NavLink className='navbar-brand' to='/'>
+      <div>
+        <nav className='Navbar navbar navbar-expand-lg' >
+          <NavLink className='navbar-brand ml-4' to='/'>
             Jobly
           </NavLink>
           <button
@@ -23,28 +23,28 @@ class Navigation extends Component {
           <div
             className='collapse navbar-collapse justify-content-end'
             id='navbarNav'>
-            <ul className='navbar-nav'>
-              <li className='nav-item'>
+            <ul className='navbar-nav '>
+              <li className='nav-item mr-4'>
                 <NavLink className='nav-link' to='/companies'>
                   Companies
                 </NavLink>
               </li>
-              <li className='nav-item'>
+              <li className='nav-item mr-4'>
                 <NavLink className='nav-link' to='/jobs'>
                   Jobs
                 </NavLink>
               </li>
-              <li className='nav-item'>
+              <li className='nav-item mr-4'>
                 <NavLink className='nav-link' to='/profile'>
                   Profile
                 </NavLink>
               </li>
-              <li className='nav-item'>
+              <li className='nav-item mr-4'>
                 <NavLink className='nav-link' to='/'>
                   Logout
                 </NavLink>
               </li>
-              <li className='nav-item'>
+              <li className='nav-item mr-4'>
                 <NavLink className='nav-link' to='/login'>
                   Login
                 </NavLink>
