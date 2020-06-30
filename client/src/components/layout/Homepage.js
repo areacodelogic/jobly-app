@@ -15,9 +15,7 @@ class Homepage extends Component {
             <Link className='btn btn-dark mx-2' to='/login'>
               Login
             </Link>
-            <Link className='btn btn-dark mx-2' to='/register'>
-              Register
-            </Link>
+           
           </div>
         </div>
       </div>

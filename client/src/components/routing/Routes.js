@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import Homepage from '../layout/Homepage';
 import Login from '../auth/Login';
-import Register from '../auth/Register';
 import Jobs from '../job/Jobs';
 import Company from '../company/Company';
 import Companies from '../company/Companies';
@@ -15,7 +14,6 @@ class Routes extends Component {
         <Switch>
           <Route exact path='/' render={() => <Homepage />} />
           <Route exact path='/login' render={() => <Login />} />
-          <Route exact path='/register' render={() => <Register />} />
           <Route exact path='/companies' render={() => <Companies />} />
           <Route
             exact
