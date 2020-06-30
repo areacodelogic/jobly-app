@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import JoblyApi from '../../search/JoblyApi';
+import default_logo from '../../default-logo.png';
+import './Company.css'
 
 class Company extends Component {
   constructor(props) {
@@ -16,17 +18,20 @@ class Company extends Component {
   }
 
   render() {
-    const { name, description } = this.state.company;
+    const { name, description, logo_url } = this.state.company;
 
     if(!this.state.company){
       return <div>Loading...</div>
     }
     return (
-      <div className='Company '>
-      
-        <h5>{this.state.company.name}</h5>
-        
-        <p>{description}</p>
+      <div className='Company card col-md-8 offset-md-2'>
+        <div className='card-body '>
+          <h5 className='card-title d-flex justify-content-between'>
+            <span> {name} </span>
+            <img src={logo_url || default_logo} alt={name} />{' '}
+          </h5>
+          <p>{description}</p>
+        </div>
       </div>
     );
   }

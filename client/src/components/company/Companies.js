@@ -25,8 +25,7 @@ class Companies extends Component {
 
   render() {
     return (
-      <div className='Companies'>
-        <h1 className='pt-5'>Companies</h1>
+      <div className='Companies col-md-8 offset-md-2'>
         <Search
           className='mt-2'
           handleSearch={this.handleSearch}
