@@ -1,25 +1,18 @@
 /** Routes for authentication. */
 
-const User = require('../models/User');
+const User = require('../models/user');
 const express = require('express');
-const jwt = require('jsonwebtoken');
 const router = new express.Router();
-const createToken = require('../helpers/createToken')
-
-
-const { SECRET_KEY } = require('../config');
-
+const createToken = require('../helpers/createToken');
 
 router.post('/login', async function (req, res, next) {
   try {
     const user = await User.authenticate(req.body);
     const token = createToken(user);
     return res.json({ token });
-  } catch (err) {
-    return next(err);
+  } catch (e) {
+    return next(e);
   }
 });
 
 module.exports = router;
-
-

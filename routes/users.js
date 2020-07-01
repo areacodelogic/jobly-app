@@ -1,6 +1,6 @@
 const express = require('express');
 const ExpressError = require('../helpers/ExpressError');
-const { ensureCorrectUser, ensureLoggedIn } = require('../middleware/auth');
+const { ensureCorrectUser, ensureLoggedIn, authRequired } = require('../middleware/auth');
 const User = require('../models/User');
 const { validate } = require('jsonschema');
 const { userNewSchema, userUpdateSchema } = require('../schemas');
@@ -13,7 +13,7 @@ const router = express.Router();
 
 /** GET / => {users: [user, ...]} */
 
-router.get('/', ensureLoggedIn, async function (req, res, next) {
+router.get('/', authRequired, async function (req, res, next) {
   try {
     const users = await User.findAll();
     return res.json({ users });
@@ -24,7 +24,7 @@ router.get('/', ensureLoggedIn, async function (req, res, next) {
 
 /** GET /[username] => {user: user} */
 
-router.get('/:username', ensureLoggedIn, async function (req, res, next) {
+router.get('/:username', authRequired, async function (req, res, next) {
   try {
     const user = await User.findOne(req.params.username);
     return res.json({ user });

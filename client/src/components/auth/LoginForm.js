@@ -39,7 +39,7 @@ class LoginForm extends Component {
               />
             </div>
             <div className='form-group mb-4'>
-              <label htmlFor='passwprd'>Password</label>
+              <label htmlFor='password'>Password</label>
               <input
                 type='text'
                 className='form-control'
@@ -47,9 +47,10 @@ class LoginForm extends Component {
                 id='password'
                 placeholder='Enter password...'
                 onChange={this.handleChange}
-                value={this.state.username}
+                value={this.state.password}
               />
             </div>
+            <button type="submit" className="btn btn-primary">Submit</button>
           </form>
         </div>
       </div>

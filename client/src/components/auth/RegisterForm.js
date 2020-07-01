@@ -12,7 +12,7 @@ class RegisterForm extends Component {
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleChange = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
   handleSubmit(evt) {
@@ -21,7 +21,9 @@ class RegisterForm extends Component {
   }
 
   handleChange(evt) {
-    this.setState({ [evt.target.name]: evt.target.value });
+    this.setState({ 
+      [evt.target.name]: evt.target.value 
+    });
   }
 
   render() {
@@ -69,7 +71,7 @@ class RegisterForm extends Component {
               <label htmlFor='last_name'>Last Name</label>
               <input
                 type='text'
-                name='username'
+                name='last_name'
                 className='form-control'
                 id='last_name'
                 placeholder='Enter last name...'
@@ -89,6 +91,9 @@ class RegisterForm extends Component {
                 value={this.state.email}
               />
             </div>
+            <button type='submit' className='btn btn-primary'>
+              Submit
+            </button>
           </form>
         </div>
       </div>

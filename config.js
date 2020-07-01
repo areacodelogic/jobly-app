@@ -2,7 +2,7 @@ require("dotenv").config();
 
 const SECRET_KEY = process.env.SECRET_KEY || 'test';
 
-const PORT = +process.env.PORT || 3000;
+const PORT = +process.env.PORT || 3001;
 
 let DB_URI;
 
