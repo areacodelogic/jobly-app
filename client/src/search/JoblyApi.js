@@ -60,6 +60,10 @@ class JoblyApi {
     return res.token;
   }
 
+  static async getCurrentUser(username){
+    let res = await this.request(`users/${username}`)
+    return res.user
+  }
 }
 
 export default JoblyApi;
