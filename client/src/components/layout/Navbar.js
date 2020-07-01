@@ -1,16 +1,53 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
-import "./Navbar.css"
+import './Navbar.css';
+import { UserContext } from '../contexts/UserContext';
 
 class Navigation extends Component {
-
-
+  static contextType = UserContext;
 
   render() {
+    const currentUser = this.context;
+
+    let navLinks = (
+      <ul className='navbar-nav '>
+        <li className='nav-item mr-4'>
+          <NavLink className='nav-link' to='/companies'>
+            Companies
+          </NavLink>
+        </li>
+        <li className='nav-item mr-4'>
+          <NavLink className='nav-link' to='/jobs'>
+            Jobs
+          </NavLink>
+        </li>
+        <li className='nav-item mr-4'>
+          <NavLink className='nav-link' to='/profile'>
+            Profile
+          </NavLink>
+        </li>
+        <li className='nav-item mr-4'>
+          <NavLink className='nav-link' to='/'>
+            Logout
+          </NavLink>
+        </li>
+    
+      </ul>
+    );
+
+    if(!currentUser) {
+      navLinks = (
+         <li className='nav-item mr-4'>
+          <NavLink className='nav-link' to='/login'>
+            Login
+          </NavLink>
+        </li>
+      )
+    }
     return (
       <div>
-        <nav className='Navbar navbar navbar-expand-lg' >
-          <NavLink className='navbar-brand ml-4' to='/'>
+        <nav className='navbar navbar-expand-md navbar-dark bg-dark'>
+          <NavLink className='navbar-brand' to='/'>
             Jobly
           </NavLink>
           <button
@@ -26,33 +63,7 @@ class Navigation extends Component {
           <div
             className='collapse navbar-collapse justify-content-end'
             id='navbarNav'>
-            <ul className='navbar-nav '>
-              <li className='nav-item mr-4'>
-                <NavLink className='nav-link' to='/companies'>
-                  Companies
-                </NavLink>
-              </li>
-              <li className='nav-item mr-4'>
-                <NavLink className='nav-link' to='/jobs'>
-                  Jobs
-                </NavLink>
-              </li>
-              <li className='nav-item mr-4'>
-                <NavLink className='nav-link' to='/profile'>
-                  Profile
-                </NavLink>
-              </li>
-              <li className='nav-item mr-4'>
-                <NavLink className='nav-link' to='/'>
-                  Logout
-                </NavLink>
-              </li>
-              <li className='nav-item mr-4'>
-                <NavLink className='nav-link' to='/login'>
-                  Login
-                </NavLink>
-              </li>
-            </ul>
+            {navLinks}
           </div>
         </nav>
       </div>
