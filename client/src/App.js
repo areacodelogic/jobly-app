@@ -14,6 +14,7 @@ class App extends Component {
       currentUser: null
     }
     this.getCurrentUser = this.getCurrentUser.bind(this);
+    this.handleLogout = this.handleLogout.bind(this);
   }
 
   async componentDidMount(){
@@ -36,12 +37,17 @@ class App extends Component {
     }
   }
 
+  handleLogout() {
+    localStorage.removeItem('jobly-token');
+    this.setState({currentUser: null})
+  }
+
 
   render() {
     return (
       <UserContext.Provider value={this.state.currentUser}>
         <div className='App'>
-          <Navbar  />
+          <Navbar logout={this.handleLogout}/>
           <Routes
             getCurrentUser={this.getCurrentUser}
           />

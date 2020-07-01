@@ -10,43 +10,39 @@ class Navigation extends Component {
     const currentUser = this.context;
 
     let navLinks = (
-      <ul className='navbar-nav '>
-        <li className='nav-item mr-4'>
-          <NavLink className='nav-link' to='/companies'>
+      <div className='navbar-nav'>
+          <NavLink className='nav-link nav-item' to='/companies'>
             Companies
           </NavLink>
-        </li>
-        <li className='nav-item mr-4'>
-          <NavLink className='nav-link' to='/jobs'>
+      
+          <NavLink className='nav-link nav-item' to='/jobs'>
             Jobs
           </NavLink>
-        </li>
-        <li className='nav-item mr-4'>
-          <NavLink className='nav-link' to='/profile'>
+       
+          <NavLink className='nav-link nav-item' to='/profile'>
             Profile
           </NavLink>
-        </li>
-        <li className='nav-item mr-4'>
-          <NavLink className='nav-link' to='/'>
+      
+          <NavLink className='nav-link nav-item' to='/login' onClick={this.props.logout}>
             Logout
           </NavLink>
-        </li>
+       
     
-      </ul>
+      </div>
     );
 
     if(!currentUser) {
       navLinks = (
-         <li className='nav-item mr-4'>
-          <NavLink className='nav-link' to='/login'>
+         <div className='nav-nav '>
+          <NavLink className='nav-link nav-item' to='/login'>
             Login
           </NavLink>
-        </li>
+        </div>
       )
     }
     return (
       <div>
-        <nav className='navbar navbar-expand-md navbar-dark bg-dark'>
+        <nav className='Navbar navbar navbar-expand-md navbar-dark bg-dark'>
           <NavLink className='navbar-brand' to='/'>
             Jobly
           </NavLink>
