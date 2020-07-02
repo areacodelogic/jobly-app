@@ -25,7 +25,6 @@ class Jobs extends Component {
 
   async apply(jobId) {
     let {username} = this.context 
-    // let jobId = this.state.jobs[idx].id;
 
     let message = await JoblyApi.applyToJob(jobId, username);
     

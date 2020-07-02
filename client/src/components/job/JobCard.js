@@ -11,8 +11,8 @@ class JobCard extends Component {
     this.props.apply(this.props.job.id);
   }
   render() {
-    const { title, salary, equity } = this.props.job;
-    console.log(this.props.job)
+    const { title, salary, equity, state } = this.props.job;
+    console.log(this.props)
     return (
       <div className='Job-Card card'>
         <div className='card-body'>
@@ -24,8 +24,10 @@ class JobCard extends Component {
           <button
             className='btn btn-danger font-weight-bold text-uppercase float-right'
             onClick={this.handleApply}
+            disabled={state}
+
             >
-            {this.props.job.state ? "Applied" : 'Apply'}
+            {state ? "Applied" : 'Apply'}
           </button>
         </div>
       </div>
