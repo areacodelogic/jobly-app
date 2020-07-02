@@ -12,7 +12,13 @@ class Routes extends Component {
     return (
       <div className='Routes pt-5'>
         <Switch>
-          <Route exact path='/' render={(props) => <Homepage  currentUser={this.props.currentUser} {...props} />} />
+          <Route
+            exact
+            path='/'
+            render={(props) => (
+              <Homepage currentUser={this.props.currentUser} {...props} />
+            )}
+          />
           <Route
             exact
             path='/login'
@@ -20,14 +26,22 @@ class Routes extends Component {
               <Login {...props} getCurrentUser={this.props.getCurrentUser} />
             )}
           />
-          <Route exact path='/companies' render={() => <Companies />} />
+          <Route
+            exact
+            path='/companies'
+            render={(props) => <Companies {...props} />}
+          />
           <Route
             exact
             path='/companies/:handle'
             render={(props) => <Company {...props} />}
           />
-          <Route exact path='/jobs' render={() => <Jobs />} />
-          <Route exact path='/profile' render={(props) => <Profile {...props} />} />
+          <Route exact path='/jobs' render={(props) => <Jobs {...props} />} />
+          <Route
+            exact
+            path='/profile'
+            render={(props) => <Profile {...props} />}
+          />
         </Switch>
       </div>
     );
