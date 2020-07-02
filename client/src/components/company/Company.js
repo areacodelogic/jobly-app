@@ -14,7 +14,7 @@ class Company extends Component {
     this.state = {
       company: { jobs: [] },
     };
-
+    this.apply = this.apply.bind(this);
   }
 
   async componentDidMount() {
@@ -25,12 +25,25 @@ class Company extends Component {
 
     const companyJobs = jobs.filter((job) => job.company_handle === handle);
     company.jobs = companyJobs;
-    
+
     this.setState({ company });
   }
 
+  async apply(jobId) {
+    let { username } = this.context;
 
+    let message = await JoblyApi.applyToJob(jobId, username);
 
+    let jobs = [...this.state.company.jobs];
+    
+    let newJobs = jobs.map((job) =>
+      job.id === jobId ? { ...job, state: message } : job
+    );
+
+    this.setState((st) => ({
+      company: { ...st.company, jobs: newJobs },
+    }));
+  }
 
   render() {
     const { name, description, logo_url, jobs } = this.state.company;
@@ -47,8 +60,7 @@ class Company extends Component {
             <img src={logo_url || default_logo} alt={name} />{' '}
           </h5>
           <p>{description}</p>
-          <JobList jobs={jobs} 
-           />
+          <JobList jobs={jobs} apply={this.apply} />
         </div>
       </div>
     );
