@@ -5,35 +5,26 @@ const sqlForPartialUpdate = require('../helpers/partialUpdate');
 class Job {
   /** Find all jobs (can filter on terms in data). */
 
-  static async findAll(data) {
-    let baseQuery = 'SELECT title, salary, equity, company_handle FROM jobs';
+  static async findAll(data, username) {
+    console.log(data);
+    let baseQuery = `
+      SELECT id, title, company_handle, salary, equity, a.state 
+      FROM jobs 
+        LEFT OUTER JOIN applications AS a on a.job_id = id AND a.username = $1`;
     let whereExpressions = [];
-    let queryValues = [];
+    let queryValues = [username];
+
+    // For each possible search term, add to whereExpressions and
+    // queryValues so we can generate the right SQL
 
     if (data.min_salary) {
-      const minSalary = +data.min_salary;
-      if (!minSalary && minSalary !== 0) {
-        throw {
-          message: 'min_salary must be a number',
-          status: 400,
-        };
-      } else {
-        queryValues.push(+data.min_salary);
-        whereExpressions.push(`salary >= $${queryValues.length}`);
-      }
+      queryValues.push(+data.min_employees);
+      whereExpressions.push(`min_salary >= $${queryValues.length}`);
     }
 
-    if (data.min_equity) {
-      const minEquity = +data.min_equity;
-      if (!minEquity && minEquity !== 0) {
-        throw {
-          message: 'min_equity must be a number',
-          status: 400,
-        };
-      } else {
-        queryValues.push(+data.min_equity);
-        whereExpressions.push(`equity >= $${queryValues.length}`);
-      }
+    if (data.max_equity) {
+      queryValues.push(+data.max_employees);
+      whereExpressions.push(`min_equity >= $${queryValues.length}`);
     }
 
     if (data.search) {
@@ -144,28 +135,28 @@ class Job {
     }
   }
 
- 
   /** Apply for job: update db, returns undefined. */
 
   static async apply(id, username, state) {
-      const result = await db.query(
-          `SELECT id 
+    const result = await db.query(
+      `SELECT id 
             FROM jobs 
             WHERE id = $1`,
-          [id]);
+      [id]
+    );
 
-      if (result.rows.length === 0) {
-        let notFound = new Error(`There exists no job '${id}`);
-        notFound.status = 404;
-        throw notFound;
-      }
+    if (result.rows.length === 0) {
+      let notFound = new Error(`There exists no job '${id}`);
+      notFound.status = 404;
+      throw notFound;
+    }
 
-      await db.query(
-          `INSERT INTO applications (job_id, username, state) 
+    await db.query(
+      `INSERT INTO applications (job_id, username, state) 
             VALUES ($1, $2, $3)`,
-          [id, username, state]);
+      [id, username, state]
+    );
   }
-
 }
 
 module.exports = Job;

@@ -71,6 +71,15 @@ class Company {
 
     if (!company)
       throw new ExpressError(`There exists no company ${handle}`, 404);
+    
+    const jobsRes = await db.query(
+      `SELECT id, title, salary, equity
+            FROM jobs 
+            WHERE company_handle = $1`,
+      [handle]
+    );
+
+    company.jobs = jobsRes.rows;
 
     return company;
   }

@@ -87,11 +87,11 @@ router.delete(`/:id`, adminRequired, async function (req, res, next) {
 
 /** POST /[id]/apply  {state} => {message: state} */
 
+
 router.post('/:id/apply', authRequired, async function (req, res, next) {
   try {
-    console.log(req.username);
     const state = req.body.state || 'applied';
-    await Job.apply(req.params.id, req.user.username, state);
+    await Job.apply(req.params.id, req.username, state);
     return res.json({ message: state });
   } catch (err) {
     return next(err);
