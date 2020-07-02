@@ -1,6 +1,8 @@
 .Homepage {
-  height: 100vh;
+  background-size: 100vh;
   display: flex;
   align-items: center;
+  justify-content: center
+
 }
 

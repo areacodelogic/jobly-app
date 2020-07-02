@@ -15,7 +15,6 @@
       "photo_url": "maudespic.com"
     }
   ],
-  "required": ["username" ],
   "additionalProperties": true,
   "properties": {
     "username": {

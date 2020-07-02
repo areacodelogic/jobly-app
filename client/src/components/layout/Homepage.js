@@ -11,18 +11,14 @@ class Homepage extends Component {
     return (
       <div className='Homepage'>
         <div className='container text-center'>
+          <h1 className='mb-4 font-weight-bold'>Jobly</h1>
+          <p className='lead'>All the jobs in one, convenient place</p>
           {currentUser ? (
-            <div>
-              <h2>Welcome Back {currentUser.first_name} </h2>
-              <p className='lead'>All the jobs in one, convenient place</p>
-            </div>
+            <h2>Welcome Back {currentUser.first_name} </h2>
           ) : (
-            <div>
-              <h1> </h1>
-              <Link className='btn btn-dark mx-2' to='/login'>
-                Login
-              </Link>
-            </div>
+            <Link className='btn btn-dark mx-2' to='/login'>
+              Login
+            </Link>
           )}
         </div>
       </div>

@@ -10,7 +10,7 @@ class Navigation extends Component {
     const currentUser = this.context;
 
     let navLinks = (
-      <div className='navbar-nav'>
+      <div className='navbar-nav ml-auto'>
           <NavLink className='nav-link nav-item' to='/companies'>
             Companies
           </NavLink>
