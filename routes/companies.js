@@ -1,7 +1,7 @@
 const express = require('express');
 const ExpressError = require('../helpers/ExpressError');
 const Company = require('../models/company');
-const {  adminRequired, authRequired } = require('../middleware/auth');
+const {  ensureLoggedIn, adminRequired, authRequired } = require('../middleware/auth');
 
 const { validate } = require('jsonschema');
 const { companyNewSchema, companyUpdateSchema } = require('../schemas');

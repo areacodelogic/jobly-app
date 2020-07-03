@@ -32,7 +32,6 @@ router.get('/:id', authRequired, async function (req, res, next) {
     return next(err);
   }
 });
-
 /** POST / {jobData} => {job: job} */
 
 router.post('/', adminRequired, async function (req, res, next) {
@@ -40,10 +39,12 @@ router.post('/', adminRequired, async function (req, res, next) {
     const validation = validate(req.body, jobNewSchema);
 
     if (!validation.valid) {
-      let listOfErrors = validation.errors.map((err) => err.stack);
-      let error = new ExpressError(listOfErrors, 400);
-      return next(error);
+      return next({
+        status: 400,
+        message: validation.errors.map((e) => e.stack),
+      });
     }
+
     const job = await Job.create(req.body);
     return res.status(201).json({ job });
   } catch (err) {
@@ -56,15 +57,15 @@ router.post('/', adminRequired, async function (req, res, next) {
 router.patch('/:id', adminRequired, async function (req, res, next) {
   try {
     if ('id' in req.body) {
-      throw new ExpressError('You are not allowed to change the ID', 400);
+      return res.status(400).json({ message: 'Not allowed' });
     }
 
     const validation = validate(req.body, jobUpdateSchema);
-
     if (!validation.valid) {
-      let listOfErrors = validation.errors.map((err) => err.stack);
-      let error = new ExpressError(listOfErrors, 400);
-      return next(error);
+      return next({
+        status: 400,
+        message: validation.errors.map((e) => e.stack),
+      });
     }
 
     const job = await Job.update(req.params.id, req.body);
@@ -76,26 +77,31 @@ router.patch('/:id', adminRequired, async function (req, res, next) {
 
 /** DELETE /[handle]  =>  {message: "User deleted"}  */
 
-router.delete(`/:id`, adminRequired, async function (req, res, next) {
+router.delete("/:id", adminRequired, async function(req, res, next) {
   try {
     await Job.remove(req.params.id);
-    return res.json({ message: 'Job deleted' });
-  } catch (err) {
+    return res.json({ message: "Job deleted" });
+  }
+
+  catch (err) {
     return next(err);
   }
 });
+
 
 /** POST /[id]/apply  {state} => {message: state} */
 
-
-router.post('/:id/apply', authRequired, async function (req, res, next) {
+router.post("/:id/apply", authRequired, async function(req, res, next) {
   try {
-    const state = req.body.state || 'applied';
+    const state = req.body.state || "applied";
     await Job.apply(req.params.id, req.username, state);
     return res.json({ message: state });
-  } catch (err) {
+  }
+
+  catch (err) {
     return next(err);
   }
 });
+
 
 module.exports = router;
