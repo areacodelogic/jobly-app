@@ -13,28 +13,30 @@ class Jobs extends Component {
     this.handleSearch = this.handleSearch.bind(this);
     this.apply = this.apply.bind(this);
   }
+  
+  async handleSearch(search) {
+    let jobs = await JoblyApi.getJobs(search);
+    this.setState({ jobs });
+  }
+  
+  async apply(jobId) {
+    let {username} = this.context 
+    
+    let message = await JoblyApi.applyToJob(jobId, username);
+    
+    this.setState((st) => ({
+      jobs: st.jobs.map((job) =>
+      job.id === jobId ? { ...job, state: message } : job
+      ),
+    }));
+  }
+  
   async componentDidMount() {
     let jobs = await JoblyApi.getJobs();
     this.setState({ jobs });
   }
 
-  async handleSearch(search) {
-    let jobs = await JoblyApi.getJobs(search);
-    this.setState({ jobs });
-  }
-
-  async apply(jobId) {
-    let {username} = this.context 
-
-    let message = await JoblyApi.applyToJob(jobId, username);
-    
-    this.setState((st) => ({
-      jobs: st.jobs.map((job) =>
-        job.id === jobId ? { ...job, state: message } : job
-      ),
-    }));
-  }
-
+  
   render() {
     return (
       <div className='Jobs col-md-8 offset-md-2'>
