@@ -15,7 +15,7 @@ const router = express.Router({ mergeParams: true });
 
 router.get('/', authRequired, async function (req, res, next) {
   try {
-    const jobs = await Job.findAll(req.query);
+    const jobs = await Job.findAll(req.query, req.username);
     return res.json({ jobs });
   } catch (err) {
     return next(err);
