@@ -28,7 +28,7 @@ class RegisterForm extends Component {
 
   render() {
     return (
-      <div className='card'>
+      <div className='form-c card'>
         <div className='Auth-Form card-body'>
           <form onSubmit={this.handleSubmit}>
             <div className='form-group mb-4'>

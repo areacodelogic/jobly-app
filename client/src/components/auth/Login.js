@@ -3,6 +3,7 @@ import LoginForm from './LoginForm';
 import RegisterForm from './RegisterForm';
 import './Auth.css';
 import JoblyApi from '../../search/JoblyApi';
+import './Login.css';
 
 class Login extends Component {
   constructor(props) {
@@ -30,20 +31,20 @@ class Login extends Component {
   }
 
   async handleLogin(data) {
-    let token
+    let token;
 
     try {
       token = await JoblyApi.login(data);
 
       localStorage.setItem('jobly-token', token);
 
-      await this.props.getCurrentUser()
+      await this.props.getCurrentUser();
       this.props.history.push('/');
     } catch (err) {}
   }
 
   async handleRegister(data) {
-    let token 
+    let token;
     try {
       token = await JoblyApi.register(data);
 
@@ -64,22 +65,24 @@ class Login extends Component {
       );
 
     return (
-      <div className='form-container container col-md-6 offset-md-3 col-lg-4 offset-lg-4'>
-        <div className='d-flex justify-content-end'>
-          <div className='btn-group'>
-            <button
-              className={`btn btn-primary ${loginActive ? 'active' : ''} `}
-              onClick={this.toggleLoginView}>
-              Login
-            </button>
-            <button
-              className={`btn btn-primary ${loginActive ? '' : 'active'} `}
-              onClick={this.toggleRegisterView}>
-              Register
-            </button>
+      <div className='Login'>
+        <div className=' form-container container col-md-6 offset-md-3 col-lg-4 offset-lg-4'>
+          <div className=' d-flex justify-content-end'>
+            <div className='btn-group'>
+              <button
+                className={`btn btn-primary ${loginActive ? 'active' : ''} `}
+                onClick={this.toggleLoginView}>
+                Login
+              </button>
+              <button
+                className={`btn btn-primary ${loginActive ? '' : 'active'} `}
+                onClick={this.toggleRegisterView}>
+                Register
+              </button>
+            </div>
           </div>
+          {form}
         </div>
-        {form}
       </div>
     );
   }

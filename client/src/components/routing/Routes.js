@@ -12,7 +12,7 @@ class Routes extends Component {
   render() {
     const { getCurrentUser } = this.props;
     return (
-      <div className='Routes pt-5'>
+      <div className='Routes'>
         <Switch>
           <Route
             exact
