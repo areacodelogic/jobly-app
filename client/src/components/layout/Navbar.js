@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import './Navbar.css';
 import { UserContext } from '../contexts/UserContext';
 
@@ -66,5 +66,6 @@ class Navigation extends Component {
     );
   }
 }
+
 
 export default Navigation;

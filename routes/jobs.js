@@ -38,12 +38,11 @@ router.post('/', adminRequired, async function (req, res, next) {
   try {
     const validation = validate(req.body, jobNewSchema);
 
-    if (!validation.valid) {
-      return next({
-        status: 400,
-        message: validation.errors.map((e) => e.stack),
-      });
-    }
+   if (!validation.valid) {
+     let listOfErrors = validation.errors.map((err) => err.stack);
+     let error = new ExpressError(listOfErrors, 400);
+     return next(error);
+   }
 
     const job = await Job.create(req.body);
     return res.status(201).json({ job });
@@ -61,12 +60,11 @@ router.patch('/:id', adminRequired, async function (req, res, next) {
     }
 
     const validation = validate(req.body, jobUpdateSchema);
-    if (!validation.valid) {
-      return next({
-        status: 400,
-        message: validation.errors.map((e) => e.stack),
-      });
-    }
+   if (!validation.valid) {
+     let listOfErrors = validation.errors.map((err) => err.stack);
+     let error = new ExpressError(listOfErrors, 400);
+     return next(error);
+   }
 
     const job = await Job.update(req.params.id, req.body);
     return res.json({ job });

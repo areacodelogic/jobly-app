@@ -6,9 +6,11 @@ import Jobs from '../job/Jobs';
 import Company from '../company/Company';
 import Companies from '../company/Companies';
 import Profile from '../profile/Profile';
+import PrivateRoute from './PrivateRoute';
 
 class Routes extends Component {
   render() {
+    const { getCurrentUser } = this.props;
     return (
       <div className='Routes pt-5'>
         <Switch>
@@ -16,30 +18,33 @@ class Routes extends Component {
             exact
             path='/'
             render={(props) => (
-              <Homepage currentUser={this.props.currentUser} {...props} />
+              <Homepage {...props} />
             )}
           />
           <Route
             exact
             path='/login'
             render={(props) => (
-              <Login {...props} getCurrentUser={this.props.getCurrentUser} />
+              <Login {...props} getCurrentUser={getCurrentUser} />
             )}
           />
-          <Route
+          <PrivateRoute
             exact
             path='/companies'
             render={(props) => <Companies {...props} />}
           />
-          <Route
-            exact
+          <PrivateRoute
             path='/companies/:handle'
             render={(props) => (
-              <Company {...props} getCurrentUser={this.props.getCurrentUser} />
+              <Company {...props} getCurrentUser={getCurrentUser} />
             )}
           />
-          <Route exact path='/jobs' render={(props) => <Jobs {...props} />} />
-          <Route
+          <PrivateRoute
+            exact
+            path='/jobs'
+            render={(props) => <Jobs {...props} />}
+          />
+          <PrivateRoute
             exact
             path='/profile'
             render={(props) => <Profile {...props} />}

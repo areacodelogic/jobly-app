@@ -11,7 +11,8 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentUser: null
+      currentUser: null,
+      infoLoaded: false
     }
     this.getCurrentUser = this.getCurrentUser.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
@@ -30,10 +31,11 @@ class App extends Component {
 
       //get record of user from server and set state
       let currentUser = await JoblyApi.getCurrentUser(username);
+      console.log(currentUser)
 
-      this.setState({currentUser})
+      this.setState({currentUser, infoLoaded: true})
     } catch(err) {
-      console.error(err)
+      this.setState({ currentUser: null, infoLoaded: true });
     }
   }
 
@@ -44,6 +46,11 @@ class App extends Component {
 
 
   render() {
+    if(!this.state.infoLoaded){
+      return(
+        <div>Loading...</div>
+      )
+    }
     return (
       <UserContext.Provider value={this.state.currentUser}>
         <div className='App'>

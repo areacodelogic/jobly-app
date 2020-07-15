@@ -12,7 +12,6 @@ class JobCard extends Component {
   }
   render() {
     const { title, salary, equity, state } = this.props.job;
-    console.log(this.props)
     return (
       <div className='Job-Card card'>
         <div className='card-body'>
