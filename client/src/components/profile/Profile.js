@@ -48,7 +48,7 @@ class Profile extends Component {
 
   render() {
     return (
-      <div className='col-md-6 col-lg-4 offset-md-3 offset-lg-4'>
+      <div className='col-md-6 col-lg-4 offset-md-3 offset-lg-4 pt-5'>
         <h3>Profile</h3>
         <div className='card'>
           <div className='card-body'>
@@ -94,7 +94,7 @@ class Profile extends Component {
                 />
               </div>
               <div className='form-group'>
-                <lable>Update Password(leave empty to keep current</lable>
+                <lable>Update Password(leave empty to keep current)</lable>
                 <input
                   type='password'
                   name='password'
