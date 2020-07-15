@@ -27,7 +27,7 @@ export class Search extends Component {
       <div className='Search my-5'>
         <form className='form-inline' onSubmit={this.handleSubmit}>
           <input
-            className='form-control form-control-lg flex-grow-1 search-input'
+            className='input form-control form-control-lg flex-grow-1 search-input'
             name='searchItem'
             type='search'
             placeholder='Enter search term...'

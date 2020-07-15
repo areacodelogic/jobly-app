@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import JoblyApi from '../../search/JoblyApi';
 import UserContext from '../contexts/UserContext';
+import "./Profile.css"
 
 class Profile extends Component {
   static contextType = UserContext;
@@ -50,8 +51,8 @@ class Profile extends Component {
     return (
       <div className='col-md-6 col-lg-4 offset-md-3 offset-lg-4 pt-5'>
         <h3>Profile</h3>
-        <div className='card'>
-          <div className='card-body'>
+        <div className='Profile card'>
+          <div className=' card-body'>
             <form onSubmit={this.handleSubmit}>
             <div className="form-group">
             <lable>Username</lable>
