@@ -1,5 +1,5 @@
 const express = require('express');
-const ExpressError = require('../helpers/expressError');
+const ExpressError = require('../helpers/ExpressError');
 
 const Job = require('../models/job');
 const {

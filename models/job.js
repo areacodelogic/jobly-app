@@ -146,7 +146,7 @@ class Job {
     );
 
     if (result.rows.length === 0) {
-      let notFound = new Error(`There exists no job '${id}`);
+      let notFound = new ExpressError(`There exists no job '${id}`);
       notFound.status = 404;
       throw notFound;
     }
