@@ -39,13 +39,11 @@ router.post('/', async function (req, res, next) {
   try {
    const validation = validate(req.body, userNewSchema);
 
-   if (!validation.valid) {
-     throw new ExpressError(
-       validation.errors.map((e) => e.stack),
-       400
-     );
-   }
-
+  if (!validation.valid) {
+    let listOfErrors = validation.errors.map((err) => err.stack);
+    let error = new ExpressError(listOfErrors, 400);
+    return next(error);
+  }
     const user = await User.register(req.body);
     const token = createToken(user);
 

@@ -1,3 +1,10 @@
+
+.form-c {
+  background: rgba(255, 255, 255, 0.5);
+  padding: 15px;
+  font-size: 25px;
+}
+
 .Login {
   background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)),
     url('https://images.unsplash.com/photo-1529790017476-1da550f3273a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=675&q=80 ');
@@ -8,12 +15,5 @@
   background-position: 50%;
   display: flex;
   justify-content: center;
-
   margin-bottom: 0;
-}
-
-.form-c {
-background: rgba(255,255,255,0.5);
-padding: 15px;
-font-size: 25px
-}
+} 
