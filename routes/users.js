@@ -1,5 +1,5 @@
 const express = require('express');
-const ExpressError = require('../helpers/ExpressError');
+// const ExpressError = require('../helpers/ExpressError');
 const { ensureCorrectUser, ensureLoggedIn, authRequired } = require('../middleware/auth');
 const User = require('../models/User');
 const { validate } = require('jsonschema');
