@@ -1,0 +1,14 @@
+.btn {
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+}
+
+.input {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.input:focus {
+  box-shadow: none;
+  border-color: #ced4da;
+}
