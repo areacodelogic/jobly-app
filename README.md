@@ -6,7 +6,7 @@ Users can create an account, log-in, search for companies, search for jobs and a
 
 Data is stored in a Postgres database.
 
-Live site:  http://perfect-circle.surge.sh/
+Live site:  http://accurate-jellyfish.surge.sh/
 
 ### Layers and Key Elements
 
